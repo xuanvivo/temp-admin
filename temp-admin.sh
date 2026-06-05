@@ -10,13 +10,13 @@ SERVER_HOST="${SERVER_HOST:-}"
 SERVER_PORT="${SERVER_PORT:-}"
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Please run as root: sudo $0"
+  echo "请使用 root 权限运行：sudo $0"
   exit 1
 fi
 
 need_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
-    echo "Missing command: $1"
+    echo "缺少必要命令：$1"
     exit 1
   }
 }
@@ -81,7 +81,7 @@ if getent group sudo >/dev/null; then
 elif getent group wheel >/dev/null; then
   ADMIN_GROUP="wheel"
 else
-  echo "Could not find sudo or wheel administrator group"
+  echo "未找到 sudo 或 wheel 管理员组"
   exit 1
 fi
 
@@ -97,7 +97,7 @@ USERNAME="${PREFIX}_$(openssl rand -hex 4)"
 PASSWORD="$(openssl rand -hex 16)"
 
 if id "$USERNAME" >/dev/null 2>&1; then
-  echo "User already exists: $USERNAME. Please retry."
+  echo "账号已存在：$USERNAME，请重新运行脚本"
   exit 1
 fi
 
@@ -125,11 +125,11 @@ fi
 
 EXPIRE_AT="$(date -d "+${TTL} seconds" '+%Y-%m-%d %H:%M:%S %Z' 2>/dev/null || date)"
 
-echo "Temporary administrator account created"
-echo "Username: $USERNAME"
-echo "Password: $PASSWORD"
-echo "Admin group: $ADMIN_GROUP"
-echo "Expires at: $EXPIRE_AT"
-echo "Server: $SERVER_HOST:$SERVER_PORT"
-echo "SSH command: ssh -p $SERVER_PORT $USERNAME@$SERVER_HOST"
-echo "Delete now: sudo $cleanup_script"
+echo "临时管理员账号已创建"
+echo "用户名：$USERNAME"
+echo "密码：$PASSWORD"
+echo "管理员组：$ADMIN_GROUP"
+echo "到期时间：$EXPIRE_AT"
+echo "服务器：$SERVER_HOST:$SERVER_PORT"
+echo "SSH 登录命令：ssh -p $SERVER_PORT $USERNAME@$SERVER_HOST"
+echo "立即删除命令：sudo $cleanup_script"
