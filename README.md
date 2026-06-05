@@ -22,4 +22,7 @@ It is suitable for temporarily granting SSH / sudo access on a server, then auto
 
 
 #一键生成临时admin账户
+
+
+
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
