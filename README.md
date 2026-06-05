@@ -1,96 +1,166 @@
-⚡️ temp-admin
-Generate a temporary Linux administrator account with a random username and a strong password.
+<div align="center">
 
-temp-admin adds the account to the sudo or wheel administrator group, then automatically deletes the account and its home directory after the expiration time.
+# ⚡ temp-admin
 
-适合临时给服务器创建 SSH / sudo 管理员账号，用完自动清理。
+**Create a temporary Linux administrator account in seconds.**
 
-🚀 Quick Start
-Create a temporary admin account. Default expiration time: 10 minutes.
+Random username · Strong password · Automatic cleanup
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](temp-admin.sh)
+[![Platform](https://img.shields.io/badge/Platform-Linux-blue)](#requirements)
+
+</div>
+
+---
+
+## 🚀 Quick Start
+
+Create a temporary administrator account valid for **10 minutes**:
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
+```
 
-⏱️ Custom Expiration Time
+The script prints everything needed to connect and clean up:
 
-Set expiration time with TTL, in seconds.
+```text
+Username: tmpadmin_xxxxxxxx
+Password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Server: PUBLIC_IP:SSH_PORT
+SSH command: ssh -p SSH_PORT tmpadmin_xxxxxxxx@PUBLIC_IP
+Delete now: sudo /root/.delete-tmpadmin_xxxxxxxx.sh
+```
 
-5 minutes
+---
 
+## ⏱️ Choose a Duration
+
+<details>
+<summary><strong>5 minutes</strong></summary>
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=300 bash
+```
 
-10 minutes
+</details>
 
+<details>
+<summary><strong>10 minutes</strong></summary>
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=600 bash
+```
 
-30 minutes
+</details>
 
+<details>
+<summary><strong>30 minutes</strong></summary>
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=1800 bash
+```
 
-1 hour
+</details>
 
+<details>
+<summary><strong>1 hour</strong></summary>
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=3600 bash
+```
 
-🔍 Inspect Before Running
+</details>
 
-Download the script first:
+---
 
+## 🗑️ Delete Immediately
+
+Delete one temporary administrator:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- tmpadmin_xxxxxxxx
+```
+
+Delete every `tmpadmin_` account:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- --all
+```
+
+---
+
+## ✨ Features
+
+- Random temporary administrator username
+- Strong 32-character hexadecimal password
+- Automatic `sudo` or `wheel` group detection
+- Automatic public IP and SSH port detection
+- Complete SSH login command in the output
+- Configurable expiration time
+- Automatic process, account, and home directory cleanup
+- Immediate deletion command
+
+---
+
+## 🔍 Inspect Before Running
+
+```bash
 curl -fsSL -o temp-admin.sh https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh
+```
 
-Make it executable:
+```bash
+less temp-admin.sh
+```
 
-chmod +x temp-admin.sh
+```bash
+chmod +x temp-admin.sh && sudo ./temp-admin.sh
+```
 
-Run it:
+---
 
-sudo ./temp-admin.sh
+## 📦 Requirements
 
-✨ Features
+- Linux
+- Root or sudo access
+- Bash
+- OpenSSL
+- Standard user-management commands
 
-• Generates a random temporary admin username
-• Generates a strong random password
-• Adds the account to the sudo or wheel group
-• Prints the username and password once
-• Automatically deletes the account after expiration
-• Removes the account home directory
-• Kills active processes owned by the temporary account before deletion
+Install OpenSSL if needed:
 
-📦 Requirements
+```bash
+# Debian / Ubuntu
+sudo apt install openssl
+```
 
-• Linux server
-• Root or sudo access
-• openssl
-• useradd
-• chpasswd
-• userdel
-• systemd-run, at, or sleep
+```bash
+# CentOS / RHEL
+sudo yum install openssl
+```
 
-Install openssl if it is missing.
+---
 
-Debian / Ubuntu:
+## ⚠️ Security
 
-apt install openssl
+- The generated account has real administrator privileges until it expires.
+- The password is displayed only once. Do not share terminal output publicly.
+- Review the script before running it on production servers.
+- Only use this project on systems you own or are authorized to manage.
+- External NAT-mapped SSH ports cannot be detected from inside the server.
 
-CentOS / RHEL:
+---
 
-yum install openssl
+## 🇨🇳 中文说明
 
-⚠️ Security Notes
+`temp-admin` 用于快速创建一个临时 Linux 管理员账号。
 
-• The password is printed in the terminal only once.
-• Do not paste the generated password in public places.
-• This script creates a real administrator account.
-• Anyone with the password can use sudo before the account expires.
-• Only run this script on servers you own or manage.
-• For production servers, inspect the script before running it.
+脚本会随机生成用户名和强密码，自动加入 `sudo` 或 `wheel` 管理员组，并在到期后删除账号、用户进程和 home 目录。
 
-🇨🇳 中文说明
+默认有效期为 **10 分钟**，适合临时提供 SSH / sudo 权限。
 
-temp-admin 会随机生成一个临时管理员账号和强密码，并把账号加入 sudo 或 wheel 管理员组。
+---
 
-默认情况下，账号会在 10 分钟后自动删除，包括对应的 home 目录。
+## 📄 License
 
-适合服务器临时给人 SSH / sudo 权限，用完自动清。
-
-📄 License
-
-MIT License
+Released under the [MIT License](LICENSE).
