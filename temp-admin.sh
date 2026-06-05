@@ -1,40 +1,22 @@
 #!/usr/bin/env bash
-# MIT License
-#
-# Copyright (c) 2026 Taxol G
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# SPDX-License-Identifier: MIT
 
 set -euo pipefail
 
 TTL="${TTL:-600}"
 PREFIX="${PREFIX:-tmpadmin}"
 SHELL_PATH="${SHELL_PATH:-/bin/bash}"
+SERVER_HOST="${SERVER_HOST:-}"
+SERVER_PORT="${SERVER_PORT:-}"
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "请用 root 运行：sudo $0"
+  echo "Please run as root: sudo $0"
   exit 1
 fi
 
 need_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
-    echo "缺少命令：$1"
+    echo "Missing command: $1"
     exit 1
   }
 }
@@ -44,24 +26,78 @@ need_cmd useradd
 need_cmd chpasswd
 need_cmd userdel
 
+detect_server_host() {
+  local detected=""
+
+  detected="$(curl -fsS --connect-timeout 2 \
+    http://169.254.169.254/latest/meta-data/public-ipv4 2>/dev/null || true)"
+
+  if [ -z "$detected" ]; then
+    detected="$(curl -4fsS --connect-timeout 3 https://ifconfig.co 2>/dev/null || true)"
+  fi
+
+  if [ -z "$detected" ]; then
+    detected="$(curl -4fsS --connect-timeout 3 https://api.ipify.org 2>/dev/null || true)"
+  fi
+
+  if [ -z "$detected" ]; then
+    detected="$(ip -4 route get 1.1.1.1 2>/dev/null |
+      awk '{for (i = 1; i <= NF; i++) if ($i == "src") {print $(i + 1); exit}}')"
+  fi
+
+  printf '%s' "${detected:-UNKNOWN}"
+}
+
+detect_server_port() {
+  local detected=""
+
+  if [ -n "${SSH_CONNECTION:-}" ]; then
+    detected="$(awk '{print $4}' <<< "$SSH_CONNECTION")"
+  fi
+
+  if [ -z "$detected" ] && [ -n "${SSH_CLIENT:-}" ]; then
+    detected="$(awk '{print $3}' <<< "$SSH_CLIENT")"
+  fi
+
+  if [ -z "$detected" ] && command -v ss >/dev/null 2>&1; then
+    detected="$(ss -H -ltnp 2>/dev/null |
+      awk '/sshd/ {
+        count = split($4, address, ":")
+        print address[count]
+        exit
+      }')"
+  fi
+
+  if [ -z "$detected" ] && command -v sshd >/dev/null 2>&1; then
+    detected="$(sshd -T 2>/dev/null |
+      awk '$1 == "port" {print $2; exit}')"
+  fi
+
+  printf '%s' "${detected:-22}"
+}
+
 if getent group sudo >/dev/null; then
   ADMIN_GROUP="sudo"
 elif getent group wheel >/dev/null; then
   ADMIN_GROUP="wheel"
 else
-  echo "找不到 sudo 或 wheel 管理员组"
+  echo "Could not find sudo or wheel administrator group"
   exit 1
 fi
 
-rand_hex() {
-  openssl rand -hex "$1"
-}
+if [ -z "$SERVER_HOST" ]; then
+  SERVER_HOST="$(detect_server_host)"
+fi
 
-USERNAME="${PREFIX}_$(rand_hex 4)"
-PASSWORD="$(openssl rand -base64 24 | tr -d '=+/[:space:]' | cut -c1-24)"
+if [ -z "$SERVER_PORT" ]; then
+  SERVER_PORT="$(detect_server_port)"
+fi
+
+USERNAME="${PREFIX}_$(openssl rand -hex 4)"
+PASSWORD="$(openssl rand -hex 16)"
 
 if id "$USERNAME" >/dev/null 2>&1; then
-  echo "账号已存在：$USERNAME，请重试"
+  echo "User already exists: $USERNAME. Please retry."
   exit 1
 fi
 
@@ -72,6 +108,7 @@ cleanup_script="/root/.delete-${USERNAME}.sh"
 cat > "$cleanup_script" <<EOF
 #!/usr/bin/env bash
 set +e
+systemctl stop 'delete-${USERNAME}.timer' >/dev/null 2>&1
 pkill -KILL -u '$USERNAME' >/dev/null 2>&1
 userdel -r '$USERNAME' >/dev/null 2>&1
 rm -f '$cleanup_script'
@@ -88,8 +125,11 @@ fi
 
 EXPIRE_AT="$(date -d "+${TTL} seconds" '+%Y-%m-%d %H:%M:%S %Z' 2>/dev/null || date)"
 
-echo "临时管理员账号已创建"
-echo "用户名：$USERNAME"
-echo "密码：$PASSWORD"
-echo "管理员组：$ADMIN_GROUP"
-echo "自动删除时间：$EXPIRE_AT"
+echo "Temporary administrator account created"
+echo "Username: $USERNAME"
+echo "Password: $PASSWORD"
+echo "Admin group: $ADMIN_GROUP"
+echo "Expires at: $EXPIRE_AT"
+echo "Server: $SERVER_HOST:$SERVER_PORT"
+echo "SSH command: ssh -p $SERVER_PORT $USERNAME@$SERVER_HOST"
+echo "Delete now: sudo $cleanup_script"
