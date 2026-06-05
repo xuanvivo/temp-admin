@@ -288,6 +288,6 @@ sudo yum install openssl
 
 ---
 
-<img width="1076" height="1158" alt="708f54080d35b8017f9923dcafcfa1bb" src="https://github.com/user-attachments/assets/eaea2603-9c4b-4da5-a460-acf5fb223359" />
+<img width="320" height="240" alt="708f54080d35b8017f9923dcafcfa1bb" src="https://github.com/user-attachments/assets/eaea2603-9c4b-4da5-a460-acf5fb223359" />
 
 
