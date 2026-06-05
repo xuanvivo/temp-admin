@@ -281,3 +281,12 @@ sudo yum install openssl
 ## 📄 许可证
 
 本项目基于 [MIT License](LICENSE) 发布。
+
+
+
+捐助
+
+---
+
+<img width="550" height="590" alt="image" src="https://github.com/user-attachments/assets/2dd93d43-ee3e-4ac0-9523-cbfe5de7a1b6" />
+
