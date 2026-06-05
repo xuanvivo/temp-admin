@@ -2,161 +2,19 @@
 
 # ⚡ temp-admin
 
-**Create a temporary Linux administrator account in seconds.**
+**几秒钟创建一个临时 Linux 管理员账号**
 
-Random username · Strong password · Automatic cleanup
+随机用户名 · 强密码 · 自动清理
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](temp-admin.sh)
-[![Platform](https://img.shields.io/badge/Platform-Linux-blue)](#requirements)
+[![Platform](https://img.shields.io/badge/Platform-Linux-blue)](#环境要求)
 
 </div>
 
 ---
 
-## 🚀 Quick Start
-
-Create a temporary administrator account valid for **10 minutes**:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
-```
-
-The script prints everything needed to connect and clean up:
-
-```text
-Username: tmpadmin_xxxxxxxx
-Password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Server: PUBLIC_IP:SSH_PORT
-SSH command: ssh -p SSH_PORT tmpadmin_xxxxxxxx@PUBLIC_IP
-Delete now: sudo /root/.delete-tmpadmin_xxxxxxxx.sh
-```
-
----
-
-## ⏱️ Choose a Duration
-
-<details>
-<summary><strong>5 minutes</strong></summary>
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=300 bash
-```
-
-</details>
-
-<details>
-<summary><strong>10 minutes</strong></summary>
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=600 bash
-```
-
-</details>
-
-<details>
-<summary><strong>30 minutes</strong></summary>
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=1800 bash
-```
-
-</details>
-
-<details>
-<summary><strong>1 hour</strong></summary>
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=3600 bash
-```
-
-</details>
-
----
-
-## 🗑️ Delete Immediately
-
-Delete one temporary administrator:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- tmpadmin_xxxxxxxx
-```
-
-Delete every `tmpadmin_` account:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- --all
-```
-
----
-
-## ✨ Features
-
-- Random temporary administrator username
-- Strong 32-character hexadecimal password
-- Automatic `sudo` or `wheel` group detection
-- Automatic public IP and SSH port detection
-- Complete SSH login command in the output
-- Configurable expiration time
-- Automatic process, account, and home directory cleanup
-- Immediate deletion command
-
----
-
-## 🔍 Inspect Before Running
-
-```bash
-curl -fsSL -o temp-admin.sh https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh
-```
-
-```bash
-less temp-admin.sh
-```
-
-```bash
-chmod +x temp-admin.sh && sudo ./temp-admin.sh
-```
-
----
-
-## 📦 Requirements
-
-- Linux
-- Root or sudo access
-- Bash
-- OpenSSL
-- Standard user-management commands
-
-Install OpenSSL if needed:
-
-```bash
-# Debian / Ubuntu
-sudo apt install openssl
-```
-
-```bash
-# CentOS / RHEL
-sudo yum install openssl
-```
-
----
-
-## ⚠️ Security
-
-- The generated account has real administrator privileges until it expires.
-- The password is displayed only once. Do not share terminal output publicly.
-- Review the script before running it on production servers.
-- Only use this project on systems you own or are authorized to manage.
-- External NAT-mapped SSH ports cannot be detected from inside the server.
-
----
-
-## 🇨🇳 中文说明
-
-<details>
-<summary><strong>展开完整中文文档</strong></summary>
-
-### 🚀 快速开始
+## 🚀 快速开始
 
 创建一个默认有效期为 **10 分钟** 的临时管理员账号：
 
@@ -174,33 +32,49 @@ SSH 命令：ssh -p SSH端口 tmpadmin_xxxxxxxx@公网IP
 立即删除：sudo /root/.delete-tmpadmin_xxxxxxxx.sh
 ```
 
-### ⏱️ 选择有效期
+---
 
-#### 5 分钟
+## ⏱️ 选择有效期
+
+<details>
+<summary><strong>5 分钟</strong></summary>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=300 bash
 ```
 
-#### 10 分钟
+</details>
+
+<details>
+<summary><strong>10 分钟</strong></summary>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=600 bash
 ```
 
-#### 30 分钟
+</details>
+
+<details>
+<summary><strong>30 分钟</strong></summary>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=1800 bash
 ```
 
-#### 1 小时
+</details>
+
+<details>
+<summary><strong>1 小时</strong></summary>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=3600 bash
 ```
 
-### 🗑️ 立即删除
+</details>
+
+---
+
+## 🗑️ 立即删除
 
 删除指定临时管理员：
 
@@ -214,7 +88,9 @@ curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-tem
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- --all
 ```
 
-### ✨ 功能
+---
+
+## ✨ 功能
 
 - 随机生成临时管理员用户名
 - 生成 32 位十六进制强密码
@@ -226,7 +102,9 @@ curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-tem
 - 自动删除账号及 home 目录
 - 提供立即删除命令
 
-### 🔍 运行前检查
+---
+
+## 🔍 运行前检查
 
 下载脚本：
 
@@ -246,7 +124,9 @@ less temp-admin.sh
 chmod +x temp-admin.sh && sudo ./temp-admin.sh
 ```
 
-### 📦 环境要求
+---
+
+## 📦 环境要求
 
 - Linux
 - Root 或 sudo 权限
@@ -266,7 +146,9 @@ sudo apt install openssl
 sudo yum install openssl
 ```
 
-### ⚠️ 安全说明
+---
+
+## ⚠️ 安全说明
 
 - 临时账号在到期前拥有真实管理员权限。
 - 密码只显示一次，不要公开分享终端输出。
@@ -274,10 +156,128 @@ sudo yum install openssl
 - 只能在你拥有或获授权管理的服务器上使用本项目。
 - 如果 SSH 端口由外部 NAT 网关映射，服务器内部无法检测公网映射端口。
 
+---
+
+## 🇬🇧 English Documentation
+
+<details>
+<summary><strong>Open the complete English documentation</strong></summary>
+
+### 🚀 Quick Start
+
+Create a temporary administrator account valid for **10 minutes**:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
+```
+
+The script prints everything needed to connect and clean up:
+
+```text
+Username: tmpadmin_xxxxxxxx
+Password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Server: PUBLIC_IP:SSH_PORT
+SSH command: ssh -p SSH_PORT tmpadmin_xxxxxxxx@PUBLIC_IP
+Delete now: sudo /root/.delete-tmpadmin_xxxxxxxx.sh
+```
+
+### ⏱️ Choose a Duration
+
+#### 5 minutes
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=300 bash
+```
+
+#### 10 minutes
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=600 bash
+```
+
+#### 30 minutes
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=1800 bash
+```
+
+#### 1 hour
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=3600 bash
+```
+
+### 🗑️ Delete Immediately
+
+Delete one temporary administrator:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- tmpadmin_xxxxxxxx
+```
+
+Delete every `tmpadmin_` account:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/delete-temp-admin.sh | sudo bash -s -- --all
+```
+
+### ✨ Features
+
+- Random temporary administrator username
+- Strong 32-character hexadecimal password
+- Automatic `sudo` or `wheel` group detection
+- Automatic public IP and SSH port detection
+- Complete SSH login command in the output
+- Configurable expiration time
+- Automatic process, account, and home directory cleanup
+- Immediate deletion command
+
+### 🔍 Inspect Before Running
+
+```bash
+curl -fsSL -o temp-admin.sh https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh
+```
+
+```bash
+less temp-admin.sh
+```
+
+```bash
+chmod +x temp-admin.sh && sudo ./temp-admin.sh
+```
+
+### 📦 Requirements
+
+- Linux
+- Root or sudo access
+- Bash
+- OpenSSL
+- Standard user-management commands
+
+Install OpenSSL if needed:
+
+```bash
+# Debian / Ubuntu
+sudo apt install openssl
+```
+
+```bash
+# CentOS / RHEL
+sudo yum install openssl
+```
+
+### ⚠️ Security
+
+- The generated account has real administrator privileges until it expires.
+- The password is displayed only once. Do not share terminal output publicly.
+- Review the script before running it on production servers.
+- Only use this project on systems you own or are authorized to manage.
+- External NAT-mapped SSH ports cannot be detected from inside the server.
+
 </details>
 
 ---
 
-## 📄 License
+## 📄 许可证
 
-Released under the [MIT License](LICENSE).
+本项目基于 [MIT License](LICENSE) 发布。
