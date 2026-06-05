@@ -284,9 +284,10 @@ sudo yum install openssl
 
 
 
-捐助
+## ☕️ 请我喝杯咖啡
 
 ---
 
-<img width="550" height="590" alt="image" src="https://github.com/user-attachments/assets/2dd93d43-ee3e-4ac0-9523-cbfe5de7a1b6" />
+<img width="1076" height="1158" alt="708f54080d35b8017f9923dcafcfa1bb" src="https://github.com/user-attachments/assets/eaea2603-9c4b-4da5-a460-acf5fb223359" />
+
 
