@@ -1,16 +1,13 @@
-# ⚡️ temp-admin
-
+⚡️ temp-admin
 Generate a temporary Linux administrator account with a random username and a strong password.
 
-`temp-admin` adds the account to the `sudo` or `wheel` administrator group, then automatically deletes the account and its home directory after the expiration time.
+temp-admin adds the account to the sudo or wheel administrator group, then automatically deletes the account and its home directory after the expiration time.
 
 适合临时给服务器创建 SSH / sudo 管理员账号，用完自动清理。
 
-## 🚀 Quick Start
+🚀 Quick Start
+Create a temporary admin account. Default expiration time: 10 minutes.
 
-Create a temporary admin account. Default expiration time: **10 minutes**.
-
-```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
 
 ⏱️ Custom Expiration Time
