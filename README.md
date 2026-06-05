@@ -2,60 +2,60 @@
 
 Generate a temporary Linux administrator account with a random username and a strong password.
 
-`temp-admin` automatically adds the account to the `sudo` or `wheel` administrator group, then deletes the account and its home directory after the expiration time.
+`temp-admin` adds the account to the `sudo` or `wheel` administrator group, then automatically deletes the account and its home directory after the expiration time.
 
-Perfect for temporarily granting SSH / sudo access to a Linux server, then cleaning it up automatically.
-
----
+适合临时给服务器创建 SSH / sudo 管理员账号，用完自动清理。
 
 ## 🚀 Quick Start
 
-Create a temporary admin account with the default expiration time: **10 minutes**.
+Create a temporary admin account. Default expiration time: **10 minutes**.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
 
-───
-
 ⏱️ Custom Expiration Time
 
-You can customize the expiration time with TTL, in seconds.
+Set expiration time with TTL, in seconds.
 
-# 5 minutes
+5 minutes
+
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=300 bash
 
-# 10 minutes, default
+10 minutes
+
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=600 bash
 
-# 30 minutes
+30 minutes
+
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=1800 bash
 
-# 1 hour
+1 hour
+
 curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo TTL=3600 bash
 
-───
+🔍 Inspect Before Running
 
-🔍 Safer Usage
-
-If you want to inspect the script before running it:
+Download the script first:
 
 curl -fsSL -o temp-admin.sh https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh
-chmod +x temp-admin.sh
-sudo ./temp-admin.sh
 
-───
+Make it executable:
+
+chmod +x temp-admin.sh
+
+Run it:
+
+sudo ./temp-admin.sh
 
 ✨ Features
 
-• 🔐 Generates a strong random password
-• 👤 Creates a random temporary admin username
-• 🛡️ Adds the account to the sudo or wheel group
-• 🖥️ Prints the username and password once in the terminal
-• ⏳ Automatically deletes the account after expiration
-• 🧹 Removes the account home directory
-• 🔪 Kills active processes owned by the temporary account before deletion
-
-───
+• Generates a random temporary admin username
+• Generates a strong random password
+• Adds the account to the sudo or wheel group
+• Prints the username and password once
+• Automatically deletes the account after expiration
+• Removes the account home directory
+• Kills active processes owned by the temporary account before deletion
 
 📦 Requirements
 
@@ -65,15 +65,17 @@ sudo ./temp-admin.sh
 • useradd
 • chpasswd
 • userdel
-• systemd-run, at, or sleep for scheduled cleanup
+• systemd-run, at, or sleep
 
-Install openssl if it is missing:
+Install openssl if it is missing.
+
+Debian / Ubuntu:
 
 apt install openssl
-# or
- yum install openssl
 
-───
+CentOS / RHEL:
+
+yum install openssl
 
 ⚠️ Security Notes
 
@@ -84,8 +86,6 @@ apt install openssl
 • Only run this script on servers you own or manage.
 • For production servers, inspect the script before running it.
 
-───
-
 🇨🇳 中文说明
 
 temp-admin 会随机生成一个临时管理员账号和强密码，并把账号加入 sudo 或 wheel 管理员组。
@@ -93,19 +93,6 @@ temp-admin 会随机生成一个临时管理员账号和强密码，并把账号
 默认情况下，账号会在 10 分钟后自动删除，包括对应的 home 目录。
 
 适合服务器临时给人 SSH / sudo 权限，用完自动清。
-
-一键运行
-
-curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
-
-注意事项
-
-• 密码只会在终端打印一次。
-• 不要把终端输出贴到公开地方。
-• 这是一个真实管理员账号，过期前拥有 sudo 权限。
-• 建议只在你自己拥有或管理的服务器上运行。
-
-───
 
 📄 License
 
