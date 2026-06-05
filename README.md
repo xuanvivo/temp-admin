@@ -13,14 +13,13 @@ It is suitable for temporarily granting SSH / sudo access on a server, then auto
 
 适合服务器临时给人 SSH / sudo 权限，用完自动清。
 
-
-
-
-
-
 注意两点：
 
 • 密码只会在终端打印一次，别把输出贴到公共地方。
 • 如果服务器没装 openssl，先装：apt install openssl 或 yum install openssl。
 
 
+
+
+#一键生成临时admin账户
+curl -fsSL https://raw.githubusercontent.com/xuanvivo/temp-admin/main/temp-admin.sh | sudo bash
